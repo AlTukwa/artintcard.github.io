@@ -15,8 +15,7 @@
   .card{background:var(--card);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.06);padding:16px;text-align:center;cursor:pointer;transition:.2s}
   .card:hover{transform:translateY(-3px)}
   .logo{width:110px;height:70px;object-fit:contain;display:block;margin:0 auto 8px;border-radius:10px;background:#fff}
-  .title{font-weight:700;margin:6px 0 4px}
-  .sub{color:var(--muted);font-size:13px;margin:0}
+  .title{font-weight:700;margin:6px 0 0}
   footer{font-size:12px;color:var(--muted);text-align:center;margin:28px 0}
   .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.45)}
   .modal.show{display:flex}
@@ -35,7 +34,6 @@
   .btn.primary{background:var(--brand);color:#fff}
   .note{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px}
   .select{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
-  .dim{color:#374151;font-size:13px;margin-top:10px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -60,54 +58,61 @@
 const WHATSAPP_NUMBER = "+9647751596434";
 const SITE_NAME = "Artint Card";
 
-/* صور JPG داخل images/ وبيانات كل طريقة */
+/* صور JPG داخل images/ + بيانات كل طريقة
+   ملاحظة: desc محذوفة حتى ما يظهر عنوان ثانوي */
 const METHODS = [
-  {id:"payeer", name:"Payeer", desc:"محفظة عالمية", img:"images/payeer.jpg",
-   type:"account", account:"P1055966828",
-   tips:["أرسل من حساب يحمل اسمك الحقيقي.","اكتب المبلغ بالدولار واحتفظ بالإيصال."]},
+  {id:"payeer", name:"Payeer", img:"images/payeer.jpg",
+   type:"account", account:"P1055966828", accountLabel:"الحساب",
+   tips:[
+     "تواصل معنا عبر واتساب قبل التحويل.",
+     "حوِّل إلى الحساب المذكور ثم أرسل إثبات التحويل."
+   ]},
 
-  {id:"zaincash", name:"ZainCash", desc:"الدفع عبر زين كاش", img:"images/zaincash.jpg",
+  {id:"zaincash", name:"ZainCash", img:"images/zaincash.jpg",
    type:"account", account:"+9647811233909",
-   tips:["حوّل من محفظتك إلى الرقم المذكور.","أرسل لقطة الشاشة ورقم العملية."]},
+   tips:["حوّل من تطبيق ZainCash ثم أرسل لقطة الشاشة مع رقم الهاتف المرسل."]},
 
-  {id:"asiapay", name:"AsiaPay", desc:"خدمة سريعة وآمنة", img:"images/asiapay.jpg",
+  {id:"asiapay", name:"AsiaPay", img:"images/asiapay.jpg",
    type:"account", account:"+9647751596434",
-   tips:["حوّل إلى الرقم المذكور ثم أرسل إيصال التحويل."]},
+   tips:["حوّل من تطبيق AsiaPay ثم أرسل لقطة الشاشة مع رقم الهاتف المرسل."]},
 
-  {id:"fastpay", name:"FastPay", desc:"دفع إلكتروني", img:"images/fastpay.jpg",
+  {id:"fastpay", name:"FastPay", img:"images/fastpay.jpg",
    type:"account", account:"+9647811233909",
    tips:["حوّل من تطبيق FastPay ثم أرسل لقطة الشاشة مع رقم الهاتف المرسل."]},
 
-  /* سبيس رمت: إيميل قابل للنسخ + ملاحظات بعد الخطوات */
-  {id:"spaceremit", name:"SpaceRemit", desc:"تحويلات مالية سريعة", img:"images/spaceremit.jpg",
+  {id:"spaceremit", name:"SpaceRemit", img:"images/spaceremit.jpg",
    type:"account", account:"baltukwa@gmail.com", accountLabel:"البريد",
-   tips:["اكتب الإيميل بشكل صحيح قبل التحويل.","أرسل لقطة شاشة تأكيد التحويل واسم المرسل."]},
+   tips:["اكتب الإيميل بشكل صحيح قبل التحويل.","أرسل لقطة شاشة لتأكيد العملية."],
+   notes:[
+     "تأكد من كتابة البريد بالشكل الصحيح قبل الإرسال.",
+     "أرفق لقطة شاشة لتأكيد العملية.",
+     "أي اختلاف في البريد قد يؤدي لضياع التحويل."
+   ]},
 
-  /* سوبر كي بدل كي كارد */
-  {id:"superkey", name:"سوبر كي", desc:"الدفع عبر Super Key", img:"images/qi.jpg",
-   type:"account", account:"+9647811233909",
-   extras:[
-     "المحفظة بإسم <b>محمد عبد الرحمن</b>",
-     "رقم حساب سوبر كي <b>765887666</b>"
-   ],
-   tips:["اكتب الاسم كما في الهوية عند الحاجة.","أرسل صورة الإيصال ورقم العملية."]},
+  {id:"superkey", name:"سوبر كي", img:"images/qi.jpg",
+   type:"superkey", phone:"+9647811233909", accnum:"765887666",
+   tips:["أرسل لقطة الشاشة بعد التحويل على واتساب."]},
 
-  {id:"altaif", name:"مصرف الطيف", desc:"الطيف الإسلامي", img:"images/altaif.jpg",
-   type:"text", how:"حوّل إلى حساب المصرف (يتم تزويدك بالرقم عبر واتساب) ثم أرسل صورة الإيصال والاسم الثلاثي."},
+  {id:"altaif", name:"مصرف الطيف", img:"images/altaif.jpg",
+   type:"text", how:"حوّل إلى حساب المصرف (يتم تزويدك بالرقم عبر واتساب) ثم أرسل صورة الإيصال."},
 
-  {id:"fib", name:"مصرف العراق الأول", desc:"حوالات مباشرة", img:"images/fib.jpg",
+  {id:"fib", name:"مصرف العراق الأول", img:"images/fib.jpg",
    type:"text", how:"حوّل داخل المصرف/حوالة محلية ثم أرسل صورة الإيصال."},
 
-  {id:"western", name:"Western Union", desc:"خدمة عالمية", img:"images/westernunion.jpg",
+  {id:"western", name:"Western Union", img:"images/westernunion.jpg",
    type:"text", how:"بعد التواصل يصلك اسم المستلم. أرسل الحوالة ثم زودنا بـ MTCN والمبلغ والبلد."},
 
-  {id:"crypto", name:"USDT", desc:"كريبتو (Tether)", img:"images/usdt.jpg",
+  {id:"crypto", name:"USDT", img:"images/usdt.jpg",
    type:"crypto",
    networks:[
      {net:"TRC20", addr:"TXXXX-EXAMPLE-TRC20-ADDRESS"},
      {net:"BEP20", addr:"0xEXAMPLEBEP20ADDRESS"},
      {net:"ERC20", addr:"0xEXAMPLEERC20ADDRESS"}
-   ]}
+   ]},
+
+  /* طريقة إضافية: MoneyGram غير متاحة حالياً */
+  {id:"moneygram", name:"MoneyGram", img:"images/moneygram.png",
+   type:"unavailable"}
 ];
 
 const grid = document.getElementById('methods');
@@ -115,7 +120,6 @@ grid.innerHTML = METHODS.map(m=>`
   <button class="card" onclick="openMethod('${m.id}')">
      <img class="logo" src="${m.img}" alt="${m.name}" onerror="this.style.display='none'">
      <div class="title">${m.name}</div>
-     <p class="sub">${m.desc||""}</p>
   </button>
 `).join('');
 
@@ -129,7 +133,13 @@ function openMethod(id){
   const m = METHODS.find(x=>x.id===id); if(!m) return;
   mTitle.textContent="الدفع عبر "+m.name;
 
-  if(m.type==="account"){
+  if(m.type==="unavailable"){
+    mBody.innerHTML = `
+      <div class="note">الخدمة غير متاحة حالياً. يرجى اختيار طريقة أخرى أو مراسلتنا على واتساب.</div>
+      ${waButton(m.name)}
+    `;
+  }
+  else if(m.type==="account"){
     const label = m.accountLabel || "الرقم/الحساب";
     mBody.innerHTML = `
       <div class="steps">
@@ -139,21 +149,40 @@ function openMethod(id){
             <input class="input" id="acct" value="${m.account}" readonly>
             <button class="btn copy" onclick="copy('#acct')">نسخ</button>
           </div>
-          ${renderExtras(m.extras)}
         </div>
         <div class="step">
           <div class="muted">٢) بعد التحويل، أرسل إثبات الدفع عبر واتساب</div>
           ${tipsList(m.tips)}
         </div>
       </div>
-      ${waButton(m.name,{extra:`${label}: ${m.account}${extraOneLine(m.extras)}`})}
-      ${m.id==="spaceremit" ? renderNotes([
-          "تأكد من كتابة البريد بالشكل الصحيح قبل الإرسال.",
-          "أرفق لقطة شاشة لتأكيد العملية مع اسم المرسل.",
-          "أي اختلاف في البريد قد يؤدي لضياع التحويل."
-        ]) : ""}
+      ${waButton(m.name,{extra:`${label}: ${m.account}`})}
+      ${m.notes? renderNotes(m.notes):""}
     `;
-  } else if(m.type==="crypto"){
+  }
+  else if(m.type==="superkey"){
+    mBody.innerHTML = `
+      <div class="steps">
+        <div class="step">
+          <div class="muted">١) رقم الهاتف (قابل للنسخ)</div>
+          <div class="row" style="margin-top:8px">
+            <input class="input" id="sk_phone" value="${m.phone}" readonly>
+            <button class="btn copy" onclick="copy('#sk_phone')">نسخ</button>
+          </div>
+          <div class="muted" style="margin-top:12px">٢) رقم حساب سوبر كي (قابل للنسخ)</div>
+          <div class="row" style="margin-top:8px">
+            <input class="input" id="sk_acc" value="${m.accnum}" readonly>
+            <button class="btn copy" onclick="copy('#sk_acc')">نسخ</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="muted">٣) بعد التحويل، أرسل إثبات الدفع عبر واتساب</div>
+          ${tipsList(m.tips)}
+        </div>
+      </div>
+      ${waButton(m.name,{extra:`الهاتف: ${m.phone} | رقم الحساب: ${m.accnum}`})}
+    `;
+  }
+  else if(m.type==="crypto"){
     const opts = m.networks.map(n=>`<option value="${n.addr}">${n.net}</option>`).join('');
     mBody.innerHTML = `
       <div class="step">
@@ -171,24 +200,15 @@ function openMethod(id){
       ${waButton(m.name,{dynamicAddr:true})}
     `;
     setTimeout(()=>{const s=document.getElementById('netSel'),a=document.getElementById('addr'); s.onchange=()=>a.value=s.value;},0);
-  } else {
-    mBody.innerHTML = `<div class="step"><div>${m.how}</div></div>${waButton(m.name)}`;
+  }
+  else {
+    mBody.innerHTML = `<div class="step"><div>${m.how||""}</div></div>${waButton(m.name)}`;
   }
   modal.classList.add('show');
 }
 
-function renderExtras(lines){
-  if(!lines?.length) return "";
-  return `<div class="dim">${lines.map(l=>`• ${l}`).join("<br>")}</div>`;
-}
-function extraOneLine(lines){
-  if(!lines?.length) return "";
-  const txt = lines.map(s=>s.replace(/<[^>]+>/g,"")).join(" | ");
-  return ` | ${txt}`;
-}
 function tipsList(arr){ if(!arr?.length) return ""; return `<ul class="muted" style="margin:8px 0 0 0; padding-right:18px; line-height:1.8">${arr.map(t=>`<li>${t}</li>`).join('')}</ul>`}
 function renderNotes(arr){ return `<div class="note" style="margin-top:12px"><b>ملاحظات:</b><br>${arr.map(t=>`• ${t}`).join("<br>")}</div>`; }
-
 function copy(sel){ const el=document.querySelector(sel); el.select(); el.setSelectionRange(0,99999); navigator.clipboard.writeText(el.value); const b=el.closest('.row').querySelector('.btn.copy'); b.textContent="نُسِخ"; setTimeout(()=>b.textContent="نسخ",1500); }
 
 function waButton(methodName, opts={}){
