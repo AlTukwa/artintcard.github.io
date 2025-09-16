@@ -59,38 +59,52 @@
 const WHATSAPP_NUMBER = "+9647751596434";
 const SITE_NAME = "Artint Card";
 
-/* صور JPG داخل مجلد images/ */
+/* صور JPG داخل images/ وبيانات كل طريقة */
 const METHODS = [
   {id:"payeer", name:"Payeer", desc:"محفظة عالمية", img:"images/payeer.jpg",
    type:"account", account:"P1055966828",
    tips:["أرسل من حساب يحمل اسمك الحقيقي.","اكتب المبلغ بالدولار واحتفظ بالإيصال."]},
-  {id:"crypto", name:"USDT", desc:"كريبتو (Tether)", img:"images/usdt.jpg",
-   type:"crypto",
-   networks:[{net:"TRC20",addr:"TXXXX-EXAMPLE-TRC20-ADDRESS"},
-             {net:"BEP20",addr:"0xEXAMPLEBEP20ADDRESS"},
-             {net:"ERC20",addr:"0xEXAMPLEERC20ADDRESS"}]},
-  {id:"western", name:"Western Union", desc:"خدمة عالمية", img:"images/westernunion.jpg",
-   type:"text", how:"أرسل الحوالة (بيانات المستلم تصلك بعد التواصل) ثم أرسل MTCN والمبلغ والبلد."},
+
   {id:"zaincash", name:"ZainCash", desc:"الدفع عبر زين كاش", img:"images/zaincash.jpg",
-   type:"text", how:"حوّل لرقم المحفظة الذي يصلك في واتساب ثم أرسل لقطة العملية."},
+   type:"account", account:"+9647811233909",
+   tips:["حوّل من محفظتك إلى الرقم المذكور.","أرسل لقطة الشاشة ورقم العملية."]},
+
   {id:"asiapay", name:"AsiaPay", desc:"خدمة سريعة وآمنة", img:"images/asiapay.jpg",
-   type:"text", how:"حوّل على حساب آسيا باي (يُرسل في واتساب) ثم أرسل الإثبات."},
+   type:"account", account:"+9647751596434",
+   tips:["حوّل إلى الرقم المذكور ثم أرسل إيصال التحويل."]},
+
+  {id:"fastpay", name:"FastPay", desc:"دفع إلكتروني", img:"images/fastpay.jpg",
+   type:"account", account:"+9647811233909",
+   tips:["حوّل من تطبيق FastPay ثم أرسل لقطة الشاشة مع رقم الهاتف المرسل."]},
+
+  {id:"spaceremit", name:"SpaceRemit", desc:"تحويلات مالية سريعة", img:"images/spaceremit.jpg",
+   type:"text", how:"حوِّل حوالة داخلية إلى البريد: <b>baltukwa@gmail.com</b> ثم أرسل لقطة الشاشة واسم المرسل."},
+
+  {id:"qi", name:"كي كارد", desc:"الدفع عبر Qi", img:"images/qi.jpg",
+   type:"text", how:"حوِّل عبر كي كارد إلى الرقم <b>+9647811233909</b> واذكر الاسم لتأكيد الهوية: <b>محمد عبد الرحمن</b>، ثم أرسل الإيصال."},
+
   {id:"altaif", name:"مصرف الطيف", desc:"الطيف الإسلامي", img:"images/altaif.jpg",
-   type:"text", how:"حوّل للمصرف ثم أرسل صورة الإيصال والاسم الثلاثي."},
+   type:"text", how:"حوّل إلى حساب المصرف (يتم تزويدك بالرقم عبر واتساب) ثم أرسل صورة الإيصال والاسم الثلاثي."},
+
   {id:"fib", name:"مصرف العراق الأول", desc:"حوالات مباشرة", img:"images/fib.jpg",
    type:"text", how:"حوّل داخل المصرف/حوالة محلية ثم أرسل صورة الإيصال."},
-  {id:"fastpay", name:"FastPay", desc:"دفع إلكتروني", img:"images/fastpay.jpg",
-   type:"text", how:"حوّل من تطبيق FastPay ثم أرسل لقطة الشاشة ورقم الهاتف."},
-  {id:"qi", name:"كي كارد", desc:"الدفع عبر Qi", img:"images/qi.jpg",
-   type:"text", how:"تحويل على بطاقة Qi (البيانات تُرسل في واتساب) ثم أرسل الإيصال."},
-  {id:"spaceremit", name:"SpaceRemit", desc:"تحويلات مالية سريعة", img:"images/spaceremit.jpg",
-   type:"text", how:"نفّذ التحويل ثم أرسل لقطة الشاشة وبيانات المرسل."}
+
+  {id:"western", name:"Western Union", desc:"خدمة عالمية", img:"images/westernunion.jpg",
+   type:"text", how:"بعد التواصل يصلك اسم المستلم. أرسل الحوالة ثم زودنا بـ MTCN والمبلغ والبلد."},
+
+  {id:"crypto", name:"USDT", desc:"كريبتو (Tether)", img:"images/usdt.jpg",
+   type:"crypto",
+   networks:[
+     {net:"TRC20", addr:"TXXXX-EXAMPLE-TRC20-ADDRESS"},
+     {net:"BEP20", addr:"0xEXAMPLEBEP20ADDRESS"},
+     {net:"ERC20", addr:"0xEXAMPLEERC20ADDRESS"}
+   ]}
 ];
 
 const grid = document.getElementById('methods');
 grid.innerHTML = METHODS.map(m=>`
   <button class="card" onclick="openMethod('${m.id}')">
-     <img class="logo" src="${m.img}" alt="${m.name}" onerror="this.outerHTML='<div style=&quot;width:110px;height:70px;margin:0 auto 8px;border-radius:10px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-weight:700&quot;>${m.name[0]||'◯'}</div>'">
+     <img class="logo" src="${m.img}" alt="${m.name}" onerror="this.style.display='none'">
      <div class="title">${m.name}</div>
      <p class="sub">${m.desc||""}</p>
   </button>
@@ -110,24 +124,24 @@ function openMethod(id){
     mBody.innerHTML = `
       <div class="steps">
         <div class="step">
-          <div class="muted">١) قم بتحويل الأموال إلى حسابنا الموضح أدناه</div>
+          <div class="muted">١) حوّل إلى الرقم/الحساب أدناه</div>
           <div class="row" style="margin-top:8px">
             <input class="input" id="acct" value="${m.account}" readonly>
             <button class="btn copy" onclick="copy('#acct')">نسخ</button>
           </div>
         </div>
         <div class="step">
-          <div class="muted">٢) بعد التحويل، أرسل إثبات الدفع عبر واتساب (لقطة شاشة + اسم المرسل الحقيقي + المبلغ)</div>
+          <div class="muted">٢) بعد التحويل، أرسل إثبات الدفع عبر واتساب</div>
           ${tipsList(m.tips)}
         </div>
       </div>
-      ${waButton(m.name,{extra:`الحساب: ${m.account}`})}
+      ${waButton(m.name,{extra:`الرقم/الحساب: ${m.account}`})}
     `;
   } else if(m.type==="crypto"){
     const opts = m.networks.map(n=>`<option value="${n.addr}">${n.net}</option>`).join('');
     mBody.innerHTML = `
       <div class="step">
-        <div class="muted">اختر الشبكة ثم انسخ العنوان وحوّل USDT</div>
+        <div class="muted">اختر الشبكة ثم انسخ العنوان وحوِّل USDT</div>
         <div style="display:grid;gap:10px;margin-top:8px">
           <select class="select" id="netSel">${opts}</select>
           <div class="row">
