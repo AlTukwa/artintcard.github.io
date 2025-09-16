@@ -1,118 +1,174 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>طرق الدفع</title>
-  <style>
-    body {
-      font-family: "Tahoma", sans-serif;
-      background: #f8f8f8;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 30px;
-      color: #333;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      padding: 15px;
-      transition: transform 0.2s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-    }
-    .card img {
-      max-width: 120px;
-      margin-bottom: 10px;
-    }
-    .card h3 {
-      margin: 10px 0 5px;
-      color: #444;
-    }
-    .card p {
-      font-size: 14px;
-      color: #666;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>طرق الدفع</title>
+<style>
+  :root{--bg:#f7f7f9;--card:#fff;--txt:#1f2937;--muted:#6b7280;--brand:#0ea5e9}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Tahoma",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt)}
+  header{position:sticky;top:0;background:#fff;padding:16px 20px;box-shadow:0 1px 8px rgba(0,0,0,.06);z-index:10}
+  h1{margin:0;font-size:22px;text-align:center}
+  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.06);padding:16px;text-align:center;cursor:pointer;transition:.2s}
+  .card:hover{transform:translateY(-3px)}
+  .logo{width:110px;height:70px;object-fit:contain;display:block;margin:0 auto 8px;border-radius:10px;background:#fff}
+  .title{font-weight:700;margin:6px 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin:0}
+  footer{font-size:12px;color:var(--muted);text-align:center;margin:28px 0}
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.45)}
+  .modal.show{display:flex}
+  .sheet{width:min(720px,100%);background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.2);overflow:hidden}
+  .sheet header{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:14px 16px}
+  .sheet h2{margin:0;font-size:18px}
+  .x{border:0;background:#f3f4f6;width:36px;height:36px;border-radius:10px;cursor:pointer}
+  .body{padding:16px}
+  .steps{display:grid;gap:14px;margin:8px 0 18px}
+  .step{border:1px dashed #e5e7eb;border-radius:12px;padding:12px}
+  .muted{color:var(--muted);font-size:13px}
+  .row{display:flex;gap:8px;align-items:center}
+  .input{flex:1;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:14px;direction:ltr}
+  .btn{border:0;border-radius:12px;padding:12px 14px;cursor:pointer;font-weight:700}
+  .btn.copy{background:#f3f4f6}
+  .btn.primary{background:var(--brand);color:#fff}
+  .note{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px}
+  .select{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
+</style>
 </head>
 <body>
 
-  <h1>طرق الدفع المتاحة لدينا</h1>
-  <div class="cards">
-    
-    <div class="card">
-      <img src="images/spaceremit.jpg" alt="SpaceRemit">
-      <h3>SpaceRemit</h3>
-      <p>تحويلات مالية سريعة</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/qi.jpg" alt="Qi Card">
-      <h3>كي كارد</h3>
-      <p>الدفع عبر Qi</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/fib.jpg" alt="FIB">
-      <h3>مصرف العراق الأول</h3>
-      <p>حوالات مباشرة</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/fastpay.jpg" alt="FastPay">
-      <h3>FastPay</h3>
-      <p>دفع إلكتروني</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/payeer.jpg" alt="Payeer">
-      <h3>Payeer</h3>
-      <p>محفظة عالمية</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/zaincash.jpg" alt="ZainCash">
-      <h3>ZainCash</h3>
-      <p>الدفع عبر زين كاش</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/asiapay.jpg" alt="AsiaPay">
-      <h3>AsiaPay</h3>
-      <p>خدمة سريعة وآمنة</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/usdt.jpg" alt="USDT">
-      <h3>USDT</h3>
-      <p>كريبتو (Tether)</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/westernunion.jpg" alt="Western Union">
-      <h3>Western Union</h3>
-      <p>خدمة عالمية</p>
-    </div>
-    
-    <div class="card">
-      <img src="images/altaif.jpg" alt="AlTaif Bank">
-      <h3>مصرف الطيف</h3>
-      <p>الطيف الإسلامي</p>
-    </div>
-    
-  </div>
+<header><h1>طرق الدفع المتاحة لدينا</h1></header>
+<div class="wrap">
+  <div class="grid" id="methods"></div>
+  <footer>أرسل إثبات التحويل عبر واتساب فقط – بدون رفع ملفات على الموقع.</footer>
+</div>
 
+<div class="modal" id="modal">
+  <div class="sheet">
+    <header>
+      <h2 id="mTitle">تفاصيل الدفع</h2>
+      <button class="x" id="close" title="اغلاق">✕</button>
+    </header>
+    <div class="body" id="mBody"></div>
+  </div>
+</div>
+
+<script>
+const WHATSAPP_NUMBER = "+9647751596434";
+const SITE_NAME = "Artint Card";
+
+/* صور JPG داخل مجلد images/ */
+const METHODS = [
+  {id:"payeer", name:"Payeer", desc:"محفظة عالمية", img:"images/payeer.jpg",
+   type:"account", account:"P1055966828",
+   tips:["أرسل من حساب يحمل اسمك الحقيقي.","اكتب المبلغ بالدولار واحتفظ بالإيصال."]},
+  {id:"crypto", name:"USDT", desc:"كريبتو (Tether)", img:"images/usdt.jpg",
+   type:"crypto",
+   networks:[{net:"TRC20",addr:"TXXXX-EXAMPLE-TRC20-ADDRESS"},
+             {net:"BEP20",addr:"0xEXAMPLEBEP20ADDRESS"},
+             {net:"ERC20",addr:"0xEXAMPLEERC20ADDRESS"}]},
+  {id:"western", name:"Western Union", desc:"خدمة عالمية", img:"images/westernunion.jpg",
+   type:"text", how:"أرسل الحوالة (بيانات المستلم تصلك بعد التواصل) ثم أرسل MTCN والمبلغ والبلد."},
+  {id:"zaincash", name:"ZainCash", desc:"الدفع عبر زين كاش", img:"images/zaincash.jpg",
+   type:"text", how:"حوّل لرقم المحفظة الذي يصلك في واتساب ثم أرسل لقطة العملية."},
+  {id:"asiapay", name:"AsiaPay", desc:"خدمة سريعة وآمنة", img:"images/asiapay.jpg",
+   type:"text", how:"حوّل على حساب آسيا باي (يُرسل في واتساب) ثم أرسل الإثبات."},
+  {id:"altaif", name:"مصرف الطيف", desc:"الطيف الإسلامي", img:"images/altaif.jpg",
+   type:"text", how:"حوّل للمصرف ثم أرسل صورة الإيصال والاسم الثلاثي."},
+  {id:"fib", name:"مصرف العراق الأول", desc:"حوالات مباشرة", img:"images/fib.jpg",
+   type:"text", how:"حوّل داخل المصرف/حوالة محلية ثم أرسل صورة الإيصال."},
+  {id:"fastpay", name:"FastPay", desc:"دفع إلكتروني", img:"images/fastpay.jpg",
+   type:"text", how:"حوّل من تطبيق FastPay ثم أرسل لقطة الشاشة ورقم الهاتف."},
+  {id:"qi", name:"كي كارد", desc:"الدفع عبر Qi", img:"images/qi.jpg",
+   type:"text", how:"تحويل على بطاقة Qi (البيانات تُرسل في واتساب) ثم أرسل الإيصال."},
+  {id:"spaceremit", name:"SpaceRemit", desc:"تحويلات مالية سريعة", img:"images/spaceremit.jpg",
+   type:"text", how:"نفّذ التحويل ثم أرسل لقطة الشاشة وبيانات المرسل."}
+];
+
+const grid = document.getElementById('methods');
+grid.innerHTML = METHODS.map(m=>`
+  <button class="card" onclick="openMethod('${m.id}')">
+     <img class="logo" src="${m.img}" alt="${m.name}" onerror="this.outerHTML='<div style=&quot;width:110px;height:70px;margin:0 auto 8px;border-radius:10px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-weight:700&quot;>${m.name[0]||'◯'}</div>'">
+     <div class="title">${m.name}</div>
+     <p class="sub">${m.desc||""}</p>
+  </button>
+`).join('');
+
+const modal=document.getElementById('modal');
+const mTitle=document.getElementById('mTitle');
+const mBody=document.getElementById('mBody');
+document.getElementById('close').onclick=()=>modal.classList.remove('show');
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
+
+function openMethod(id){
+  const m = METHODS.find(x=>x.id===id); if(!m) return;
+  mTitle.textContent="الدفع عبر "+m.name;
+
+  if(m.type==="account"){
+    mBody.innerHTML = `
+      <div class="steps">
+        <div class="step">
+          <div class="muted">١) قم بتحويل الأموال إلى حسابنا الموضح أدناه</div>
+          <div class="row" style="margin-top:8px">
+            <input class="input" id="acct" value="${m.account}" readonly>
+            <button class="btn copy" onclick="copy('#acct')">نسخ</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="muted">٢) بعد التحويل، أرسل إثبات الدفع عبر واتساب (لقطة شاشة + اسم المرسل الحقيقي + المبلغ)</div>
+          ${tipsList(m.tips)}
+        </div>
+      </div>
+      ${waButton(m.name,{extra:`الحساب: ${m.account}`})}
+    `;
+  } else if(m.type==="crypto"){
+    const opts = m.networks.map(n=>`<option value="${n.addr}">${n.net}</option>`).join('');
+    mBody.innerHTML = `
+      <div class="step">
+        <div class="muted">اختر الشبكة ثم انسخ العنوان وحوّل USDT</div>
+        <div style="display:grid;gap:10px;margin-top:8px">
+          <select class="select" id="netSel">${opts}</select>
+          <div class="row">
+            <input class="input" id="addr" value="${m.networks[0].addr}" readonly>
+            <button class="btn copy" onclick="copy('#addr')">نسخ</button>
+          </div>
+        </div>
+      </div>
+      <div class="note">تنبيه: تأكد من مطابقة الشبكة قبل التحويل.</div>
+      <div style="height:8px"></div>
+      ${waButton(m.name,{dynamicAddr:true})}
+    `;
+    setTimeout(()=>{const s=document.getElementById('netSel'),a=document.getElementById('addr'); s.onchange=()=>a.value=s.value;},0);
+  } else {
+    mBody.innerHTML = `<div class="step"><div>${m.how}</div></div>${waButton(m.name)}`;
+  }
+  modal.classList.add('show');
+}
+
+function tipsList(arr){ if(!arr?.length) return ""; return `<ul class="muted" style="margin:8px 0 0 0; padding-right:18px; line-height:1.8">${arr.map(t=>`<li>${t}</li>`).join('')}</ul>`}
+function copy(sel){ const el=document.querySelector(sel); el.select(); el.setSelectionRange(0,99999); navigator.clipboard.writeText(el.value); const b=el.closest('.row').querySelector('.btn.copy'); b.textContent="نُسِخ"; setTimeout(()=>b.textContent="نسخ",1500); }
+
+function waButton(methodName, opts={}){
+  const base = `مرحباً، أريد تأكيد دفع (${methodName}) من خلال موقع ${SITE_NAME}.`;
+  const extra = opts.extra ? `\n${opts.extra}` : "";
+  const click = opts.dynamicAddr ? "onclick='sendWA_dynamic(\""+methodName+"\")'" : "";
+  const url = "https://wa.me/"+WHATSAPP_NUMBER.replace(/[^\d]/g,'')+"?text="+encodeURIComponent(
+    `${base}\nالمبلغ: ____ USD\nاسم المرسل: ____${extra}\nسأرفق لقطة الشاشة هنا في واتساب.`
+  );
+  return `<button class="btn primary" style="width:100%" ${click} data-url="${url}" onclick="${opts.dynamicAddr?'':"window.open(this.dataset.url,'_blank')"}">إرسال الإثبات على واتساب</button>`;
+}
+function sendWA_dynamic(methodName){
+  const addr = document.getElementById('addr')?.value || "";
+  const msg = `مرحباً، أريد تأكيد دفع (${methodName}) من خلال موقع ${SITE_NAME}.
+المبلغ: ____ USDT
+الشبكة/العنوان: ${addr}
+اسم المرسل: ____
+سأرفق لقطة الشاشة هنا في واتساب.`;
+  const url = "https://wa.me/"+WHATSAPP_NUMBER.replace(/[^\d]/g,'')+"?text="+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+</script>
 </body>
 </html>
