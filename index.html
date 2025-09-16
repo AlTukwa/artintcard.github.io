@@ -9,14 +9,22 @@
   *{box-sizing:border-box}
   body{margin:0;font-family:"Tahoma",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt)}
   header{position:sticky;top:0;background:#fff;padding:16px 20px;box-shadow:0 1px 8px rgba(0,0,0,.06);z-index:10}
-  h1{margin:0;font-size:22px;text-align:center}
-  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
-  .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
-  .card{background:var(--card);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.06);padding:16px;text-align:center;cursor:pointer;transition:.2s}
+  h1{margin:0;font-size:20px;text-align:center}
+  .wrap{max-width:1100px;margin:16px auto 24px;padding:0 14px}
+
+  /* شبكة: هاتف = عمودين / تابلت=3 / كمبيوتر=4 */
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+  @media (min-width:640px){ .grid{grid-template-columns:repeat(3,1fr)} }
+  @media (min-width:900px){ .grid{grid-template-columns:repeat(4,1fr)} }
+
+  .card{background:var(--card);border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.06);
+        padding:16px;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center}
   .card:hover{transform:translateY(-3px)}
-  .logo{width:110px;height:70px;object-fit:contain;display:block;margin:0 auto 8px;border-radius:10px;background:#fff}
-  .title{font-weight:700;margin:6px 0 0}
-  footer{font-size:12px;color:var(--muted);text-align:center;margin:28px 0}
+  .logo{width:120px;height:68px;object-fit:contain;display:block}
+
+  footer{font-size:12px;color:var(--muted);text-align:center;margin:22px 0}
+
+  /* نافذة التفاصيل */
   .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.45)}
   .modal.show{display:flex}
   .sheet{width:min(720px,100%);background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.2);overflow:hidden}
@@ -44,6 +52,7 @@
   <footer>أرسل إثبات التحويل عبر واتساب فقط – بدون رفع ملفات على الموقع.</footer>
 </div>
 
+<!-- نافذة التفاصيل -->
 <div class="modal" id="modal">
   <div class="sheet">
     <header>
@@ -58,15 +67,11 @@
 const WHATSAPP_NUMBER = "+9647751596434";
 const SITE_NAME = "Artint Card";
 
-/* صور JPG داخل images/ + بيانات كل طريقة
-   ملاحظة: desc محذوفة حتى ما يظهر عنوان ثانوي */
+/* صور JPG داخل images/ */
 const METHODS = [
   {id:"payeer", name:"Payeer", img:"images/payeer.jpg",
    type:"account", account:"P1055966828", accountLabel:"الحساب",
-   tips:[
-     "تواصل معنا عبر واتساب قبل التحويل.",
-     "حوِّل إلى الحساب المذكور ثم أرسل إثبات التحويل."
-   ]},
+   tips:["تواصل معنا عبر واتساب قبل التحويل.","حوِّل إلى الحساب المذكور ثم أرسل إثبات التحويل."]},
 
   {id:"zaincash", name:"ZainCash", img:"images/zaincash.jpg",
    type:"account", account:"+9647811233909",
@@ -83,11 +88,7 @@ const METHODS = [
   {id:"spaceremit", name:"SpaceRemit", img:"images/spaceremit.jpg",
    type:"account", account:"baltukwa@gmail.com", accountLabel:"البريد",
    tips:["اكتب الإيميل بشكل صحيح قبل التحويل.","أرسل لقطة شاشة لتأكيد العملية."],
-   notes:[
-     "تأكد من كتابة البريد بالشكل الصحيح قبل الإرسال.",
-     "أرفق لقطة شاشة لتأكيد العملية.",
-     "أي اختلاف في البريد قد يؤدي لضياع التحويل."
-   ]},
+   notes:["تأكد من كتابة البريد بالشكل الصحيح قبل الإرسال.","أرفق لقطة شاشة لتأكيد العملية.","أي اختلاف في البريد قد يؤدي لضياع التحويل."]},
 
   {id:"superkey", name:"سوبر كي", img:"images/qi.jpg",
    type:"superkey", phone:"+9647811233909", accnum:"765887666",
@@ -110,19 +111,18 @@ const METHODS = [
      {net:"ERC20", addr:"0xEXAMPLEERC20ADDRESS"}
    ]},
 
-  /* طريقة إضافية: MoneyGram غير متاحة حالياً */
-  {id:"moneygram", name:"MoneyGram", img:"images/moneygram.png",
-   type:"unavailable"}
+  {id:"moneygram", name:"MoneyGram", img:"images/moneygram.png", type:"unavailable"}
 ];
 
+/* بناء الشبكة (شعارات فقط) */
 const grid = document.getElementById('methods');
 grid.innerHTML = METHODS.map(m=>`
   <button class="card" onclick="openMethod('${m.id}')">
      <img class="logo" src="${m.img}" alt="${m.name}" onerror="this.style.display='none'">
-     <div class="title">${m.name}</div>
   </button>
 `).join('');
 
+/* نافذة التفاصيل */
 const modal=document.getElementById('modal');
 const mTitle=document.getElementById('mTitle');
 const mBody=document.getElementById('mBody');
@@ -134,10 +134,7 @@ function openMethod(id){
   mTitle.textContent="الدفع عبر "+m.name;
 
   if(m.type==="unavailable"){
-    mBody.innerHTML = `
-      <div class="note">الخدمة غير متاحة حالياً. يرجى اختيار طريقة أخرى أو مراسلتنا على واتساب.</div>
-      ${waButton(m.name)}
-    `;
+    mBody.innerHTML = `<div class="note">الخدمة غير متاحة حالياً. يرجى اختيار طريقة أخرى أو مراسلتنا على واتساب.</div>${waButton(m.name)}`;
   }
   else if(m.type==="account"){
     const label = m.accountLabel || "الرقم/الحساب";
@@ -201,12 +198,13 @@ function openMethod(id){
     `;
     setTimeout(()=>{const s=document.getElementById('netSel'),a=document.getElementById('addr'); s.onchange=()=>a.value=s.value;},0);
   }
-  else {
+  else { // نص عام
     mBody.innerHTML = `<div class="step"><div>${m.how||""}</div></div>${waButton(m.name)}`;
   }
   modal.classList.add('show');
 }
 
+/* أدوات */
 function tipsList(arr){ if(!arr?.length) return ""; return `<ul class="muted" style="margin:8px 0 0 0; padding-right:18px; line-height:1.8">${arr.map(t=>`<li>${t}</li>`).join('')}</ul>`}
 function renderNotes(arr){ return `<div class="note" style="margin-top:12px"><b>ملاحظات:</b><br>${arr.map(t=>`• ${t}`).join("<br>")}</div>`; }
 function copy(sel){ const el=document.querySelector(sel); el.select(); el.setSelectionRange(0,99999); navigator.clipboard.writeText(el.value); const b=el.closest('.row').querySelector('.btn.copy'); b.textContent="نُسِخ"; setTimeout(()=>b.textContent="نسخ",1500); }
