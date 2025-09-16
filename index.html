@@ -35,6 +35,7 @@
   .btn.primary{background:var(--brand);color:#fff}
   .note{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px}
   .select{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
+  .dim{color:#374151;font-size:13px;margin-top:10px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -77,11 +78,19 @@ const METHODS = [
    type:"account", account:"+9647811233909",
    tips:["حوّل من تطبيق FastPay ثم أرسل لقطة الشاشة مع رقم الهاتف المرسل."]},
 
+  /* سبيس رمت: إيميل قابل للنسخ + ملاحظات بعد الخطوات */
   {id:"spaceremit", name:"SpaceRemit", desc:"تحويلات مالية سريعة", img:"images/spaceremit.jpg",
-   type:"text", how:"حوِّل حوالة داخلية إلى البريد: <b>baltukwa@gmail.com</b> ثم أرسل لقطة الشاشة واسم المرسل."},
+   type:"account", account:"baltukwa@gmail.com", accountLabel:"البريد",
+   tips:["اكتب الإيميل بشكل صحيح قبل التحويل.","أرسل لقطة شاشة تأكيد التحويل واسم المرسل."]},
 
-  {id:"qi", name:"كي كارد", desc:"الدفع عبر Qi", img:"images/qi.jpg",
-   type:"text", how:"حوِّل عبر كي كارد إلى الرقم <b>+9647811233909</b> واذكر الاسم لتأكيد الهوية: <b>محمد عبد الرحمن</b>، ثم أرسل الإيصال."},
+  /* سوبر كي بدل كي كارد */
+  {id:"superkey", name:"سوبر كي", desc:"الدفع عبر Super Key", img:"images/qi.jpg",
+   type:"account", account:"+9647811233909",
+   extras:[
+     "المحفظة بإسم <b>محمد عبد الرحمن</b>",
+     "رقم حساب سوبر كي <b>765887666</b>"
+   ],
+   tips:["اكتب الاسم كما في الهوية عند الحاجة.","أرسل صورة الإيصال ورقم العملية."]},
 
   {id:"altaif", name:"مصرف الطيف", desc:"الطيف الإسلامي", img:"images/altaif.jpg",
    type:"text", how:"حوّل إلى حساب المصرف (يتم تزويدك بالرقم عبر واتساب) ثم أرسل صورة الإيصال والاسم الثلاثي."},
@@ -121,21 +130,28 @@ function openMethod(id){
   mTitle.textContent="الدفع عبر "+m.name;
 
   if(m.type==="account"){
+    const label = m.accountLabel || "الرقم/الحساب";
     mBody.innerHTML = `
       <div class="steps">
         <div class="step">
-          <div class="muted">١) حوّل إلى الرقم/الحساب أدناه</div>
+          <div class="muted">١) حوِّل إلى <b>${label}</b> أدناه</div>
           <div class="row" style="margin-top:8px">
             <input class="input" id="acct" value="${m.account}" readonly>
             <button class="btn copy" onclick="copy('#acct')">نسخ</button>
           </div>
+          ${renderExtras(m.extras)}
         </div>
         <div class="step">
           <div class="muted">٢) بعد التحويل، أرسل إثبات الدفع عبر واتساب</div>
           ${tipsList(m.tips)}
         </div>
       </div>
-      ${waButton(m.name,{extra:`الرقم/الحساب: ${m.account}`})}
+      ${waButton(m.name,{extra:`${label}: ${m.account}${extraOneLine(m.extras)}`})}
+      ${m.id==="spaceremit" ? renderNotes([
+          "تأكد من كتابة البريد بالشكل الصحيح قبل الإرسال.",
+          "أرفق لقطة شاشة لتأكيد العملية مع اسم المرسل.",
+          "أي اختلاف في البريد قد يؤدي لضياع التحويل."
+        ]) : ""}
     `;
   } else if(m.type==="crypto"){
     const opts = m.networks.map(n=>`<option value="${n.addr}">${n.net}</option>`).join('');
@@ -161,7 +177,18 @@ function openMethod(id){
   modal.classList.add('show');
 }
 
+function renderExtras(lines){
+  if(!lines?.length) return "";
+  return `<div class="dim">${lines.map(l=>`• ${l}`).join("<br>")}</div>`;
+}
+function extraOneLine(lines){
+  if(!lines?.length) return "";
+  const txt = lines.map(s=>s.replace(/<[^>]+>/g,"")).join(" | ");
+  return ` | ${txt}`;
+}
 function tipsList(arr){ if(!arr?.length) return ""; return `<ul class="muted" style="margin:8px 0 0 0; padding-right:18px; line-height:1.8">${arr.map(t=>`<li>${t}</li>`).join('')}</ul>`}
+function renderNotes(arr){ return `<div class="note" style="margin-top:12px"><b>ملاحظات:</b><br>${arr.map(t=>`• ${t}`).join("<br>")}</div>`; }
+
 function copy(sel){ const el=document.querySelector(sel); el.select(); el.setSelectionRange(0,99999); navigator.clipboard.writeText(el.value); const b=el.closest('.row').querySelector('.btn.copy'); b.textContent="نُسِخ"; setTimeout(()=>b.textContent="نسخ",1500); }
 
 function waButton(methodName, opts={}){
